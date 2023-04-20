@@ -17,17 +17,7 @@ public class LaserGun : MonoBehaviour
     void Update()
     {
         if (Camera.main != null) mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        hypotenuse = new Vector2(mousePosition.y - transform.position.y, mousePosition.x - transform.position.x).magnitude;
-        if (mousePosition.y>transform.position.y)
-        {
-            angle = 90 - Mathf.Asin((mousePosition.x - transform.position.x) / hypotenuse) * 180 / Mathf.PI;
-
-        }
-        else
-        {
-            angle = 270 - Mathf.Asin((transform.position.x - mousePosition.x) / hypotenuse) * 180 / Mathf.PI;
-        }
-        transform.rotation = Quaternion.Euler(0, 0, angle);
+        transform.rotation = Quaternion.Euler(0, 0, MyFunctions.FindAngle(transform.position,mousePosition));
         if (Input.GetMouseButtonDown(0))
         {
 

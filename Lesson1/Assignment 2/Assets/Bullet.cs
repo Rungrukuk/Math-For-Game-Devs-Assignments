@@ -4,24 +4,28 @@ public class Bullet : MonoBehaviour
 {
     private LaserGun laserGun;
     [SerializeField] private float speed = 10f;
-    [SerializeField] private float rayDistance = 50f;
+    [SerializeField] private Rigidbody2D rb;
+    private float currentAngle;
+    private Vector2 bulletVelocity;
+    
     void Start()
     {
         laserGun = GameObject.FindWithTag("Player").GetComponent<LaserGun>();
-        transform.rotation = Quaternion.LookRotation(Vector3.forward,transform.position -laserGun.transform.position);
+        bulletVelocity = (laserGun.shootingMousePos - laserGun.transform.position);
+        bulletVelocity.Normalize();
+        rb.velocity = bulletVelocity * speed;
     }
-
-
-    void FixedUpdate()
+    
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        transform.Translate(new Vector3(0,0.01f * speed,0));
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.rotation * new Vector2(0, rayDistance));
-
-    }
-
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawRay(transform.position,transform.rotation * new Vector2(0,rayDistance));
+        Quaternion myRotation = other.transform.rotation;
+        if (myRotation.eulerAngles.z == 90)
+        {
+            rb.velocity *= new Vector2(-1, 1);
+        }
+        else
+        {
+            rb.velocity *= new Vector2(1, -1);
+        }
     }
 }
