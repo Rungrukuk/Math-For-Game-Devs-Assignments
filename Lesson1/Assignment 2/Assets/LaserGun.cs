@@ -11,6 +11,7 @@ public class LaserGun : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] Transform shootingPos;
     [SerializeField] private GameObject bullets;
+    private float hypotenuse;
 
     // Update is called once per frame
     void Update()
@@ -19,11 +20,14 @@ public class LaserGun : MonoBehaviour
         
         if (Input.GetMouseButtonDown(0))
         {
-            transform.rotation = Quaternion.identity;
-            var position = transform.position;
-            dotProduct = position.normalized.x * mousePosition.x + position.normalized.y * mousePosition.y;
-            angle = Mathf.Acos(dotProduct / mousePosition.magnitude * position.normalized.magnitude) * 180 / Mathf.PI;
-            transform.rotation = Quaternion.Euler(0,0,angle);
+            
+            if (mousePosition.y>transform.position.y && mousePosition.x>transform.position.x)
+            {
+                hypotenuse = new Vector2(mousePosition.y - transform.position.y, mousePosition.x - transform.position.x).magnitude;
+                angle = Mathf.Asin((mousePosition.y - transform.position.y) / hypotenuse) * 180 / Mathf.PI;
+                Debug.Log(angle);
+                transform.rotation = Quaternion.Euler(0, 0, angle);
+            }
             shootingMousePos = mousePosition;
             var bullet = Instantiate(bulletPrefab, shootingPos);
             bullet.transform.parent = bullets.transform;
