@@ -1,4 +1,3 @@
-
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
@@ -16,11 +15,13 @@ public class Bullet : MonoBehaviour
     void FixedUpdate()
     {
         transform.Translate(new Vector3(0,0.01f * speed,0));
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.rotation * new Vector2(0, 7));
-        // if (hit.collider!=null)
-        // {
-        //     hit.
-        // }
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.rotation * new Vector2(0, rayDistance));
+
     }
-    
+
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawRay(transform.position,transform.rotation * new Vector2(0,rayDistance));
+    }
 }
