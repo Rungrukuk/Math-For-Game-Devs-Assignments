@@ -1,4 +1,3 @@
-using Unity.Mathematics;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
@@ -11,27 +10,32 @@ public class Bullet : MonoBehaviour
     private Vector2 vectorProjection;
     private RaycastHit2D ray;
 
+
     void Start()
     {
         laserGun = GameObject.FindWithTag("Player").GetComponent<LaserGun>();
-        transform.rotation = Quaternion.Euler(0, 0, MyFunctions.FindAngle(transform.position, laserGun.shootingMousePos));
+
         bulletVelocity = (laserGun.shootingMousePos - laserGun.transform.position);
         bulletVelocity.Normalize();
         rb.velocity = bulletVelocity * speed;
+        transform.rotation = Quaternion.Euler(0, 0, MyFunctions.FindAngle(default,rb.velocity));
         vectorProjection = GetVectorProjection(rayStartPos.position,bulletVelocity);
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
+        transform.rotation = Quaternion.identity;
         bulletVelocity -= (2 * vectorProjection);
         bulletVelocity.Normalize();
         rb.velocity = bulletVelocity * speed;
-        // transform.rotation = quaternion.Euler(0,0,MyFunctions.FindAngle(ray.point,(Vector2)transform.position +  rb.velocity));
+        float angle = MyFunctions.FindAngle(default, rb.velocity);
+        Debug.Log(angle);
+        transform.rotation = Quaternion.Euler(0,0,angle);
         vectorProjection = GetVectorProjection(rayStartPos.position,rb.velocity);
-
     }
 
     private void OnDrawGizmos()
     {
+        Gizmos.DrawLine(default,rb.velocity);
         Gizmos.DrawLine(rayStartPos.position,ray.point);
     }
 
