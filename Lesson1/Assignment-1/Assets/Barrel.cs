@@ -1,21 +1,16 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Barrel : MonoBehaviour
 {
-    [SerializeField] private float checkDistance = 5;
-    private GameObject player;
-
-    private void Start()
-    {
-        player = GameObject.FindGameObjectWithTag("Player");
-    }
+    [SerializeField] private float radius = 5;
+    [SerializeField] private Transform player;
+    
 
     void Update()
     {
-        if (player.transform.position.x>=transform.position.x - checkDistance && player.transform.position.x<=transform.position.x + checkDistance)
+        if (player.position.x>=transform.position.x - radius && player.position.x<=transform.position.x + radius)
         {
             Debug.Log("Player in");
         }
@@ -23,8 +18,18 @@ public class Barrel : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        var position = transform.position;
-        Gizmos.DrawLine(position,new Vector3(position.x - checkDistance,position.y,0));
-        Gizmos.DrawLine(position,new Vector3(position.x + checkDistance,position.y,0));
+        Vector3 center = transform.position;
+        Gizmos.DrawWireSphere(center,radius);
+        float distance = 0;
+        if (player!=null)
+        {
+           distance = (player.position - center).magnitude;
+        }
+
+        if (distance<=radius)
+        {
+            Debug.Log("Player in");
+        }
+        
     }
 }
