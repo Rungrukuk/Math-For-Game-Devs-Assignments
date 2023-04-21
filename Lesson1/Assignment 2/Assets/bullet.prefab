@@ -116,7 +116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fae82c3d5749a3941b1ff5b0c344900c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1.73
+  speed: 10
   rb: {fileID: 2958768839150300341}
   rayStartPos: {fileID: 3380828374229241693}
 --- !u!50 &2958768839150300341
