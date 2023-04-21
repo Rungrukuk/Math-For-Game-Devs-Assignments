@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="2fbac70a-108c-4139-bf69-f82bf6fa7ff5" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Assignment-1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Assignment-1/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Barrel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Barrel.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,7 +88,7 @@
       <updated>1681912878149</updated>
       <workItem from="1681912880150" duration="8000" />
       <workItem from="1681923853072" duration="3129000" />
-      <workItem from="1682072506558" duration="630000" />
+      <workItem from="1682072506558" duration="1227000" />
     </task>
     <servers />
   </component>

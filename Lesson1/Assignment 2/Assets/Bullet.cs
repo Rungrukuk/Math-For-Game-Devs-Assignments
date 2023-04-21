@@ -1,4 +1,4 @@
-using System;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
@@ -7,51 +7,38 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float speed = 10f;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform rayStartPos;
-    private float currentAngle;
     private Vector2 bulletVelocity;
-    // private Vector2 hitObjVector;
-    // private RaycastHit2D hit;
-    
+    private Vector2 vectorProjection;
+    private RaycastHit2D ray;
+
     void Start()
     {
         laserGun = GameObject.FindWithTag("Player").GetComponent<LaserGun>();
+        transform.rotation = Quaternion.Euler(0, 0, MyFunctions.FindAngle(transform.position, laserGun.shootingMousePos));
         bulletVelocity = (laserGun.shootingMousePos - laserGun.transform.position);
         bulletVelocity.Normalize();
         rb.velocity = bulletVelocity * speed;
-        // hit = Physics2D.Raycast(rayStartPos.position,rb.velocity * 200);
-        // hitObjVector = new Vector2(Mathf.Sin(hit.transform.rotation.eulerAngles.z * Mathf.PI/180),Mathf.Cos(hit.transform.rotation.eulerAngles.z* Mathf.PI/180));
-        // hitObjVector *= hit.point;
-        //hitObjVector -= hit.point;
+        vectorProjection = GetVectorProjection(rayStartPos.position,bulletVelocity);
     }
-    
-    
-
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Quaternion myRotation = other.transform.rotation;
-        if (myRotation.eulerAngles.z == 90)
-        {
-            rb.velocity *= new Vector2(-1, 1);
-        }
-        else
-        {
-            rb.velocity *= new Vector2(1, -1);
-        }
-        
-        // float xVelocity = Mathf.Sin(myRotation.eulerAngles.z);
-        // float yVelocity = Mathf.Cos(myRotation.eulerAngles.z);
-        // if (xVelocity>yVelocity)
-        // {
-        //     xVelocity *= -1;
-        // }
-        //
-        // if (yVelocity>xVelocity)
-        // {
-        //     yVelocity *= -1;
-        // }
-        // rb.velocity *= new Vector2(xVelocity,yVelocity);
-        // bulletVelocity -= hitObjVector;
-        // bulletVelocity.Normalize();
-        // rb.velocity = bulletVelocity * 20;
+        bulletVelocity -= (2 * vectorProjection);
+        bulletVelocity.Normalize();
+        rb.velocity = bulletVelocity * speed;
+        // transform.rotation = quaternion.Euler(0,0,MyFunctions.FindAngle(ray.point,(Vector2)transform.position +  rb.velocity));
+        vectorProjection = GetVectorProjection(rayStartPos.position,rb.velocity);
+
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawLine(rayStartPos.position,ray.point);
+    }
+
+    private Vector2 GetVectorProjection(Vector3 startPos, Vector2 velocity)
+    {
+        ray = Physics2D.Raycast(startPos, velocity);
+        Debug.Log(ray.collider.name);
+        return ray.normal * Vector2.Dot(velocity, ray.normal);
     }
 }
